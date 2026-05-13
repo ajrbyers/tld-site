@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>The Lower Decks 2.0: Lanyards</title>
+  <link rel="stylesheet" href="static/style.css">
+  <style>
+    /* ─── Print layout ──────────────────────────────────────
+       Each card is 6.7 x 8.6 cm (the inner window of the
+       Vertical Badge Holder). A4 portrait fits a 3 x 3 grid.
+    */
+    :root {
+      --card-w: 6.7cm;
+      --card-h: 8.6cm;
+      --dark:  #3a3935;
+      --gold:  #d4972a;
+      --white: #f0ead8;
+      --muted: rgba(240,234,216,.65);
+    }
+
+    html, body { margin: 0; padding: 0; background: #1e1d1a; color: var(--white); font-family: 'Space Mono', monospace; }
+
+    /* Screen-only toolbar with print button + sample summary */
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      padding: .8rem 1.2rem;
+      background: var(--dark);
+      border-bottom: 1px solid rgba(240,234,216,.15);
+      font-size: .85rem;
+    }
+    .toolbar button,
+    .toolbar .file-btn {
+      background: var(--gold);
+      border: none;
+      color: #1e1d1a;
+      font: 700 .8rem/1 'Space Mono', monospace;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: .55rem .9rem;
+      cursor: pointer;
+      border-radius: 2px;
+      display: inline-block;
+    }
+    .toolbar button:hover,
+    .toolbar .file-btn:hover { filter: brightness(1.1); }
+    .toolbar code {
+      font: 700 .75rem 'Space Mono', monospace;
+      color: var(--white);
+      background: rgba(240,234,216,.08);
+      padding: .1rem .3rem;
+      border-radius: 2px;
+    }
+    .toolbar .count { color: var(--muted); }
+
+    .sheet-wrap {
+      padding: 1.6rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.6rem;
+    }
+
+    /* A4 sheet for print */
+    .sheet {
+      width: 21cm;
+      min-height: 29.7cm;
+      background: #fff;
+      box-sizing: border-box;
+      padding: 1cm .9cm;
+      display: grid;
+      grid-template-columns: repeat(3, var(--card-w));
+      grid-auto-rows: var(--card-h);
+      gap: .35cm .25cm;
+      justify-content: center;
+      align-content: start;
+    }
+
+    /* The lanyard card itself — black-and-white for print */
+    .card {
+      position: relative;
+      width: var(--card-w);
+      height: var(--card-h);
+      background: #fff;
+      color: #000;
+      overflow: hidden;
+      box-sizing: border-box;
+      padding: .35cm .4cm;
+      display: flex;
+      flex-direction: column;
+      font-family: 'Space Mono', monospace;
+      /* Solid border helps cropping and gives the card definition */
+      border: 1pt solid #000;
+    }
+
+    /* Top: event tag */
+    .card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: .15cm;
+      padding-bottom: .1cm;
+      border-bottom: .5pt solid #000;
+    }
+    .card-event {
+      font-size: 5.6pt;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: #000;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .card-event.is-muted { color: #555; font-weight: 400; }
+
+    /* Body: name, pronouns, affiliation, role */
+    .card-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: .12cm;
+    }
+    .card-name {
+      font-size: 14pt;
+      font-weight: 700;
+      line-height: 1.05;
+      color: #000;
+      margin: 0;
+      word-break: break-word;
+    }
+    .card-pronouns {
+      font-size: 7pt;
+      color: #555;
+      letter-spacing: .04em;
+      margin: 0;
+    }
+    .card-rule {
+      width: .6cm;
+      height: 1pt;
+      background: #000;
+      margin: .12cm 0;
+    }
+    .card-affil {
+      font-size: 8pt;
+      color: #000;
+      line-height: 1.25;
+      margin: 0;
+    }
+    .card-role {
+      font-size: 7pt;
+      color: #555;
+      line-height: 1.25;
+      margin: 0;
+    }
+
+    /* Footer: event date + hashtag */
+    .card-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: .15cm;
+      padding-top: .1cm;
+      border-top: .5pt solid #000;
+      font-size: 5.5pt;
+      color: #555;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .card-foot strong { color: #000; font-weight: 700; }
+
+    /* Optional STAFF flag — inverted block for B&W contrast */
+    .card.is-staff .card-flag {
+      position: absolute;
+      top: .15cm;
+      right: .3cm;
+      font-size: 5.5pt;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: #fff;
+      background: #000;
+      padding: .04cm .14cm;
+      font-weight: 700;
+    }
+
+    /* ─── Print rules ──────────────────────────────────────── */
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+    @media print {
+      html, body { background: #fff; }
+      .toolbar { display: none; }
+      .sheet-wrap { padding: 0; gap: 0; }
+      .sheet {
+        page-break-after: always;
+        margin: 0 auto;
+      }
+      .sheet:last-of-type { page-break-after: auto; }
+      /* Force backgrounds and colours to render in print */
+      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="toolbar">
+  <label for="csv" class="file-btn">Load CSV</label>
+  <input id="csv" type="file" accept=".csv,text/csv" hidden>
+  <button type="button" onclick="window.print()">Print sheet</button>
+  <span class="count" id="count">No attendees loaded</span>
+  <span class="count">CSV columns: <code>First Name, Second Name, Institution, Staff</code> (Staff = <code>Y</code> or blank). The file is read in your browser and never uploaded.</span>
+</div>
+
+<div class="sheet-wrap" id="sheet-wrap"></div>
+
+<script>
+// ─── Sample data ──────────────────────────────────────────────
+// Three organisers as a visible default so the layout is testable
+// before the consent-form CSV is dropped in. These names appear on
+// the public homepage already; nothing here is private.
+const sampleAttendees = [
+  { name: 'Andy Byers',  pronouns: '', affiliation: 'Open Library of Humanities', role: 'Organiser', staff: true },
+  { name: 'Joan Kwaske', pronouns: '', affiliation: 'Michigan Publishing',        role: 'Organiser', staff: true },
+  { name: 'Alex Kouker', pronouns: '', affiliation: 'Dublin City University',     role: 'Organiser', staff: true },
+];
+let attendees = sampleAttendees;
+
+const PER_PAGE = 9;
+const wrap = document.getElementById('sheet-wrap');
+const countEl = document.getElementById('count');
+
+function escapeHtml(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+function render(list) {
+  wrap.innerHTML = '';
+  const sheets = Math.max(1, Math.ceil(list.length / PER_PAGE));
+  for (let s = 0; s < sheets; s++) {
+    const sheet = document.createElement('div');
+    sheet.className = 'sheet';
+    for (let i = 0; i < PER_PAGE; i++) {
+      const idx = s * PER_PAGE + i;
+      const a = list[idx];
+      if (!a) {
+        const blank = document.createElement('div');
+        blank.className = 'card';
+        blank.style.background = 'transparent';
+        blank.style.outline = '.3pt dashed rgba(0,0,0,.15)';
+        sheet.appendChild(blank);
+        continue;
+      }
+      const card = document.createElement('article');
+      card.className = 'card' + (a.staff ? ' is-staff' : '');
+      card.innerHTML = `
+        ${a.staff ? '<span class="card-flag">Staff</span>' : ''}
+        <header class="card-head">
+          <span class="card-event">The Lower Decks 2.0</span>
+        </header>
+        <div class="card-body">
+          <h1 class="card-name">${escapeHtml(a.name)}</h1>
+          ${a.pronouns ? `<p class="card-pronouns">${escapeHtml(a.pronouns)}</p>` : ''}
+          <div class="card-rule"></div>
+          <p class="card-affil">${escapeHtml(a.affiliation)}</p>
+          ${a.role ? `<p class="card-role">${escapeHtml(a.role)}</p>` : ''}
+        </div>
+        <footer class="card-foot">
+          <span>21–22 May 2026</span>
+          <span><strong>#JanewayOA26</strong></span>
+        </footer>
+      `;
+      sheet.appendChild(card);
+    }
+    wrap.appendChild(sheet);
+  }
+  countEl.textContent = `${list.length} delegate${list.length === 1 ? '' : 's'} · ${sheets} sheet${sheets === 1 ? '' : 's'}`;
+}
+
+// ─── CSV parsing (all client-side) ────────────────────────────
+// RFC-4180-ish: handles quoted fields, escaped quotes, commas in quotes,
+// and CRLF / LF line endings.
+function parseCSV(text) {
+  const rows = [];
+  let row = [], cell = '', i = 0, inQuotes = false;
+  while (i < text.length) {
+    const c = text[i];
+    if (inQuotes) {
+      if (c === '"') {
+        if (text[i + 1] === '"') { cell += '"'; i += 2; continue; }
+        inQuotes = false; i++; continue;
+      }
+      cell += c; i++; continue;
+    }
+    if (c === '"') { inQuotes = true; i++; continue; }
+    if (c === ',') { row.push(cell); cell = ''; i++; continue; }
+    if (c === '\r') { i++; continue; }
+    if (c === '\n') { row.push(cell); rows.push(row); row = []; cell = ''; i++; continue; }
+    cell += c; i++;
+  }
+  if (cell.length || row.length) { row.push(cell); rows.push(row); }
+  return rows.filter(r => r.some(v => String(v).trim() !== ''));
+}
+
+function csvToAttendees(rows) {
+  if (!rows.length) return [];
+  const header = rows[0].map(h => h.trim().toLowerCase());
+  const col = (names) => {
+    for (const n of names) {
+      const idx = header.indexOf(n);
+      if (idx !== -1) return idx;
+    }
+    return -1;
+  };
+  const ix = {
+    firstName:   col(['first name', 'firstname', 'given name']),
+    lastName:    col(['second name', 'last name', 'lastname', 'surname', 'family name']),
+    fullName:    col(['name', 'full name', 'attendee']),
+    pronouns:    col(['pronouns', 'pronoun']),
+    affiliation: col(['institution', 'affiliation', 'organisation', 'organization']),
+    role:        col(['role', 'role/job title', 'job title', 'title']),
+    staff:       col(['staff', 'is staff']),
+  };
+  if (ix.firstName === -1 && ix.fullName === -1) {
+    alert('CSV needs either a "Name" column or both "First Name" and "Second Name" columns.');
+    return [];
+  }
+  const list = [];
+  for (let r = 1; r < rows.length; r++) {
+    const row = rows[r];
+    const get = (k) => ix[k] >= 0 ? (row[ix[k]] || '').trim() : '';
+    const name = ix.fullName >= 0
+      ? get('fullName')
+      : [get('firstName'), get('lastName')].filter(Boolean).join(' ');
+    if (!name) continue;
+    const staffRaw = get('staff').toLowerCase();
+    list.push({
+      name,
+      pronouns:    get('pronouns'),
+      affiliation: get('affiliation'),
+      role:        get('role'),
+      staff:       ['1', 'true', 'yes', 'y', 'staff'].includes(staffRaw),
+    });
+  }
+  return list;
+}
+
+document.getElementById('csv').addEventListener('change', (e) => {
+  const file = e.target.files && e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const rows = parseCSV(reader.result);
+      const list = csvToAttendees(rows);
+      if (list.length) {
+        attendees = list;
+        render(attendees);
+      }
+    } catch (err) {
+      alert('Could not parse CSV: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+});
+
+render(attendees);
+</script>
+
+</body>
+</html>
