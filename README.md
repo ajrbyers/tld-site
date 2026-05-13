@@ -34,4 +34,4 @@ Then open <http://localhost:8000/>.
 - Attendance links (Online and In-person guides) live in the `.about-register` block in `index.html`.
 - Sponsor links live in the `.about-sponsor` block in `index.html`.
 - Zoom meeting links and Discord invite live in `technical-guide.html` (Platforms section) and `online-attendees.html`.
-- Times marked **TBC** in `online-attendees.html` (livestream start, Discord welcome) need filling in nearer the event.
+- Livestream and Discord welcome times in `online-attendees.html` (09:30 and 09:15 Dublin / IST) are set; update if the schedule changes.

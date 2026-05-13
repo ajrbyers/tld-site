@@ -50,6 +50,39 @@ body {
 :focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
 
 
+.site-nav {
+  background: var(--dark);
+  border-bottom: 1px solid rgba(240,234,216,.08);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+.site-nav-inner {
+  max-width: var(--col);
+  margin: 0 auto;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding: 1rem 1.5rem;
+}
+.site-nav-inner a {
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+}
+.site-nav-inner a:hover,
+.site-nav-inner a:focus { color: var(--gold); }
+.site-nav-inner a[aria-current="page"] {
+  color: var(--white);
+  border-bottom: 2px solid var(--gold);
+  padding-bottom: 2px;
+}
+
+
 .hero {
   background: var(--dark);
   padding: 4rem 1.5rem 5rem;
