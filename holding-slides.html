@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Lower Decks 2.0: Holding Slides</title>
+  <link rel="stylesheet" href="static/style.css">
+  <style>
+    /* ─── Slideshow chrome ───────────────────────────────── */
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: #1e1d1a;
+    }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .deck {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    /* Each slide is a 16:9 canvas that scales to fit the viewport
+       while preserving aspect ratio. Design tokens reference 1920x1080. */
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .slide.is-active { display: flex; }
+
+    .slide-frame {
+      position: relative;
+      width: 100vw;
+      height: 56.25vw;          /* 16:9 by width */
+      max-height: 100vh;
+      max-width: 177.78vh;      /* 16:9 by height */
+      overflow: hidden;
+      background: var(--dark);
+      /* Use vmin so type and spacing scale together */
+      font-size: clamp(12px, 1.3vmin, 24px);
+    }
+
+    /* ── Slide 1: Hero (holding) ── */
+    .slide-hero {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      padding: 8% 9%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      color: var(--white);
+      overflow: hidden;
+    }
+
+    .slide-hero-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .slide-hero-bg .road {
+      position: absolute;
+      top: -5%;
+      left: 52%;
+      height: 110%;
+      width: auto;
+    }
+    .slide-hero-bg .c1 {
+      position: absolute;
+      width: 12vmin;
+      height: 12vmin;
+      border-radius: 50%;
+      background: var(--teal-md, #4a7380);
+      top: 14%;
+      left: 22%;
+      opacity: .9;
+    }
+    .slide-hero-bg .c2 {
+      position: absolute;
+      width: 18vmin;
+      height: 18vmin;
+      border-radius: 50%;
+      background: var(--teal, #36565f);
+      bottom: 18%;
+      right: 22%;
+      opacity: .9;
+    }
+
+    .slide-hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 60%;
+    }
+
+    .slide-logos {
+      display: flex;
+      align-items: center;
+      gap: 2.4em;
+      margin-bottom: 5em;
+    }
+    .slide-logos img { height: 4.6em; }
+    .slide-logos-sep {
+      width: 1px;
+      height: 3.6em;
+      background: rgba(240,234,216,.25);
+    }
+
+    .slide-title {
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      font-size: 11em;
+      line-height: .98;
+      letter-spacing: -.01em;
+      color: var(--white);
+      margin: 0 0 .35em 0;
+    }
+    .slide-sub {
+      font-family: 'Space Mono', monospace;
+      font-size: 2.4em;
+      line-height: 1.35;
+      color: rgba(240,234,216,.7);
+      margin: 0 0 2em 0;
+    }
+    .slide-date {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.6em;
+      font-weight: 700;
+      letter-spacing: .06em;
+      color: var(--gold);
+      border-top: 3px solid var(--gold);
+      padding-top: .5em;
+      display: inline-block;
+    }
+
+    /* ── Slide 2: Sponsors ── */
+    .slide-sponsors {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      padding: 6% 9% 8%;
+      display: flex;
+      flex-direction: column;
+      color: var(--white);
+      background: var(--dark);
+    }
+
+    .slide-sponsors-head {
+      display: flex;
+      align-items: center;
+      gap: 2.4em;
+      margin-bottom: 0;
+    }
+    .slide-sponsors-head img { height: 3.6em; }
+    .slide-sponsors-head .slide-logos-sep { height: 2.8em; }
+    .slide-sponsors-event {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.4em;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: rgba(240,234,216,.55);
+      margin-left: auto;
+    }
+
+    .slide-sponsors-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 3em;
+    }
+    .slide-sponsors-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5em;
+    }
+
+    .slide-sponsors-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.6em;
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border-top: 3px solid var(--gold);
+      padding-top: .5em;
+      display: inline-block;
+      margin: 0;
+    }
+
+    .slide-sponsors-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8em;
+      width: 90%;
+      align-items: center;
+      justify-items: center;
+    }
+    .slide-sponsor {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.6em;
+      color: var(--white);
+    }
+    .slide-sponsor img {
+      width: 100%;
+      max-width: 34em;
+      max-height: 14em;
+      height: auto;
+      object-fit: contain;
+    }
+    .slide-sponsor-fallback {
+      font-family: 'Space Mono', monospace;
+      font-size: 3.4em;
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: .02em;
+      color: var(--white);
+    }
+    .slide-sponsor-fallback small {
+      display: block;
+      font-size: .35em;
+      font-weight: 400;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: rgba(240,234,216,.45);
+      margin-top: 1em;
+    }
+
+    .slide-sponsors-foot {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.4em;
+      letter-spacing: .08em;
+      color: rgba(240,234,216,.55);
+      text-align: center;
+    }
+    .slide-sponsors-foot strong {
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    /* ── Slide 3: Housekeeping + Discord ── */
+    .slide-housekeeping {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      padding: 6% 9% 8%;
+      display: flex;
+      flex-direction: column;
+      color: var(--white);
+      background: var(--dark);
+    }
+    .slide-hk-body {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8em;
+      align-items: center;
+      padding: 2em 0;
+    }
+    .slide-hk-discord {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .slide-hk-discord .slide-sponsors-label { margin-bottom: 1em; }
+    .slide-hk-url {
+      font-family: 'Space Mono', monospace;
+      font-size: 3.2em;
+      font-weight: 700;
+      line-height: 1.05;
+      color: var(--white);
+      margin: 0 0 .8em 0;
+      white-space: nowrap;
+    }
+    .slide-hk-qr {
+      background: var(--white);
+      padding: 1em;
+      border-radius: 4px;
+      display: inline-flex;
+    }
+    .slide-hk-qr img {
+      width: 14em;
+      height: 14em;
+      display: block;
+    }
+    .slide-hk-url-sub {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.4em;
+      letter-spacing: .04em;
+      color: rgba(240,234,216,.6);
+      margin: 1em 0 0 0;
+    }
+    .slide-hk-url-sub strong {
+      color: var(--gold);
+      font-weight: 700;
+    }
+    .slide-hk-info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .slide-hk-info .slide-sponsors-label { margin-bottom: 1.5em; }
+    .slide-hk-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1.6em;
+    }
+    .slide-hk-list li {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.8em;
+      line-height: 1.3;
+    }
+    .slide-hk-list strong {
+      color: var(--white);
+      font-weight: 700;
+    }
+    .slide-hk-list span {
+      color: rgba(240,234,216,.6);
+      font-size: .85em;
+    }
+    .hk-tag {
+      color: var(--gold) !important;
+      font-weight: 700;
+    }
+
+    /* ── Slides 4 & 5: Day programmes ── */
+    .slide-programme {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      padding: 6% 9% 8%;
+      display: flex;
+      flex-direction: column;
+      color: var(--white);
+      background: var(--dark);
+    }
+    .slide-prog-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 2.5em;
+    }
+    .slide-prog-head {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1em;
+    }
+    .slide-prog-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 5em;
+      font-weight: 700;
+      line-height: 1.05;
+      color: var(--white);
+      margin: 0;
+    }
+    .slide-prog-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      column-gap: 4em;
+      row-gap: 1em;
+    }
+    .slide-prog-list li {
+      display: flex;
+      align-items: baseline;
+      gap: 1.6em;
+      font-family: 'Space Mono', monospace;
+      font-size: 1.6em;
+      line-height: 1.2;
+      padding: .4em 0;
+      border-top: 1px solid rgba(240,234,216,.08);
+    }
+    .slide-prog-list .t {
+      color: var(--gold);
+      font-weight: 700;
+      letter-spacing: .04em;
+      flex: 0 0 auto;
+      min-width: 4em;
+    }
+    .slide-prog-list .e {
+      color: rgba(240,234,216,.85);
+    }
+    .slide-prog-list .slide-prog-keynote,
+    .slide-prog-list .slide-prog-social {
+      border-top: 2px solid var(--gold);
+      padding-top: .6em;
+    }
+    .slide-prog-list .slide-prog-keynote .e,
+    .slide-prog-list .slide-prog-social .e {
+      color: var(--white);
+      font-weight: 700;
+    }
+
+    /* ── Slide 1: Theme tag ── */
+    .slide-theme {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.4em;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: rgba(240,234,216,.55);
+      margin: 0 0 2em 0;
+    }
+    .slide-theme strong {
+      color: var(--white);
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-transform: none;
+    }
+
+    /* ── Slide 2: Co-organisers block ── */
+    .slide-coorg-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1em;
+      margin: 0;
+    }
+    .slide-coorg-list {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: center;
+      gap: 1.2em;
+      font-family: 'Space Mono', monospace;
+      font-size: 2em;
+      font-weight: 700;
+      line-height: 1.25;
+      color: var(--white);
+      text-align: center;
+    }
+    .slide-coorg-sep {
+      color: var(--gold);
+      font-weight: 400;
+    }
+
+    /* ── Slide 6: T-Shirt Contest ── */
+    .slide-contest {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      padding: 6% 9% 8%;
+      display: flex;
+      flex-direction: column;
+      color: var(--white);
+      background: var(--dark);
+    }
+    .slide-contest-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 1.2em;
+    }
+    .slide-contest-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 5.6em;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--white);
+      margin: 0;
+    }
+    .slide-contest-lede {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.8em;
+      line-height: 1.4;
+      color: rgba(240,234,216,.7);
+      margin: 0 0 1.5em 0;
+    }
+    .slide-contest-cats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4em;
+      width: 100%;
+    }
+    .slide-contest-cat {
+      border-top: 2px solid var(--gold);
+      padding-top: 1.2em;
+    }
+    .slide-contest-cat-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 2em;
+      font-weight: 700;
+      color: var(--white);
+      margin: 0 0 .6em 0;
+      line-height: 1.2;
+    }
+    .slide-contest-cat-desc {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.4em;
+      line-height: 1.5;
+      color: rgba(240,234,216,.65);
+      margin: 0;
+    }
+
+    /* ── Slide controls ── */
+    .slide-controls {
+      position: fixed;
+      bottom: 1.2rem;
+      right: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      font-family: 'Space Mono', monospace;
+      font-size: .8rem;
+      color: rgba(240,234,216,.55);
+      z-index: 50;
+      opacity: 0;
+      transition: opacity .25s ease;
+    }
+    .deck:hover .slide-controls,
+    .slide-controls:focus-within { opacity: 1; }
+    .slide-controls button {
+      background: rgba(240,234,216,.08);
+      color: var(--white);
+      border: 1px solid rgba(240,234,216,.2);
+      font: inherit;
+      padding: .4rem .7rem;
+      cursor: pointer;
+      border-radius: 2px;
+    }
+    .slide-controls button:hover { background: rgba(240,234,216,.16); }
+    .slide-counter {
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+  <!-- ─── Slide 1: Holding (hero) ─────────────────────────── -->
+  <section class="slide is-active" data-slide="1" aria-label="Holding slide">
+    <div class="slide-frame">
+      <div class="slide-hero">
+        <div class="slide-hero-bg" aria-hidden="true">
+          <img class="road" src="static/rainbow-road.svg" alt="">
+          <div class="c1"></div>
+          <div class="c2"></div>
+        </div>
+        <div class="slide-hero-content">
+          <div class="slide-logos">
+            <img src="static/Janeway_RGB Logo - White.svg" alt="Janeway">
+            <div class="slide-logos-sep" aria-hidden="true"></div>
+            <img src="static/OLH_RGB Symbol - White.png" alt="Open Library of Humanities">
+          </div>
+          <h1 class="slide-title">The Lower<br>Decks 2.0</h1>
+          <p class="slide-sub">
+            A Symposium on Janeway<br>
+            and Open Access Publishing.
+          </p>
+          <p class="slide-theme">Theme &nbsp;·&nbsp; <strong>Users &amp; Community</strong></p>
+          <p class="slide-date">
+            May 21–22, 2026 &nbsp;·&nbsp; Dublin City University, Ireland
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Slide 2: Sponsors ──────────────────────────────── -->
+  <section class="slide" data-slide="2" aria-label="Sponsors slide">
+    <div class="slide-frame">
+      <div class="slide-sponsors">
+        <div class="slide-sponsors-head">
+          <img src="static/Janeway_RGB Logo - White.svg" alt="Janeway">
+          <div class="slide-logos-sep" aria-hidden="true"></div>
+          <img src="static/OLH_RGB Symbol - White.png" alt="Open Library of Humanities">
+          <span class="slide-sponsors-event">The Lower Decks 2.0 &nbsp;·&nbsp; May 21–22, 2026</span>
+        </div>
+
+        <div class="slide-sponsors-body">
+          <div class="slide-sponsors-block">
+            <span class="slide-sponsors-label">Sponsored by</span>
+            <div class="slide-sponsors-grid">
+              <div class="slide-sponsor">
+                <!-- If logo is missing, the fallback wordmark renders. -->
+                <img src="static/siliconchips-services-logo.png" alt="Siliconchips Services"
+                     onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                <div class="slide-sponsor-fallback" style="display:none">
+                  Siliconchips<br>Services
+                  <small>siliconchips-services.com</small>
+                </div>
+              </div>
+              <div class="slide-sponsor">
+                <img src="static/iastate-digital-press-logo.svg" alt="Iowa State Digital Press"
+                     onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                <div class="slide-sponsor-fallback" style="display:none">
+                  Iowa State<br>Digital Press
+                  <small>iastatedigitalpress.com</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="slide-coorg-block">
+            <span class="slide-sponsors-label">Co-organised by</span>
+            <div class="slide-coorg-list">
+              <span>Open Library of Humanities</span>
+              <span class="slide-coorg-sep" aria-hidden="true">·</span>
+              <span>Michigan Publishing Services</span>
+              <span class="slide-coorg-sep" aria-hidden="true">·</span>
+              <span>Dublin City University Library</span>
+            </div>
+          </div>
+        </div>
+
+        <p class="slide-sponsors-foot">
+          With thanks to our sponsors &nbsp;·&nbsp; <strong>#JanewayOA26</strong>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Slide 3: Discord + Housekeeping ────────────────── -->
+  <section class="slide" data-slide="3" aria-label="Discord and housekeeping slide">
+    <div class="slide-frame">
+      <div class="slide-housekeeping">
+        <div class="slide-sponsors-head">
+          <img src="static/Janeway_RGB Logo - White.svg" alt="Janeway">
+          <div class="slide-logos-sep" aria-hidden="true"></div>
+          <img src="static/OLH_RGB Symbol - White.png" alt="Open Library of Humanities">
+          <span class="slide-sponsors-event">The Lower Decks 2.0 &nbsp;·&nbsp; May 21–22, 2026</span>
+        </div>
+
+        <div class="slide-hk-body">
+          <div class="slide-hk-discord">
+            <span class="slide-sponsors-label">Join us on Discord</span>
+            <p class="slide-hk-url">discord.gg/jkYPfj6q6N</p>
+            <div class="slide-hk-qr">
+              <img src="static/discord-qr.svg" alt="QR code for the Lower Decks Discord">
+            </div>
+            <p class="slide-hk-url-sub">Scan to join &nbsp;·&nbsp; questions in <strong>#panels</strong><br>Breakout chats at lunch in the <strong>Tavern</strong> voice channel</p>
+          </div>
+
+          <div class="slide-hk-info">
+            <span class="slide-sponsors-label">A few notes</span>
+            <ul class="slide-hk-list">
+              <li><strong>Lunch at 13:45</strong><br><span>served in the Information Commons</span></li>
+              <li><strong>Sessions are recorded</strong><br><span>speak to Andy or Joan to opt out</span></li>
+              <li><strong>Photography</strong><br><span>by Lauren Stachew for OLH social</span></li>
+              <li><strong>Share the day</strong><br><span>tag posts with <span class="hk-tag">#JanewayOA26</span></span></li>
+            </ul>
+          </div>
+        </div>
+
+        <p class="slide-sponsors-foot">
+          Welcome to The Lower Decks 2.0 &nbsp;·&nbsp; <strong>#JanewayOA26</strong>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Slide 4: Day 1 programme ───────────────────────── -->
+  <section class="slide" data-slide="4" aria-label="Day 1 programme">
+    <div class="slide-frame">
+      <div class="slide-programme">
+        <div class="slide-sponsors-head">
+          <img src="static/Janeway_RGB Logo - White.svg" alt="Janeway">
+          <div class="slide-logos-sep" aria-hidden="true"></div>
+          <img src="static/OLH_RGB Symbol - White.png" alt="Open Library of Humanities">
+          <span class="slide-sponsors-event">The Lower Decks 2.0 &nbsp;·&nbsp; May 21–22, 2026</span>
+        </div>
+
+        <div class="slide-prog-body">
+          <div class="slide-prog-head">
+            <span class="slide-sponsors-label">Day 1 &nbsp;·&nbsp; Thursday 21 May</span>
+            <h2 class="slide-prog-title">Context &amp; Community.</h2>
+          </div>
+          <ul class="slide-prog-list">
+            <li><span class="t">09:00</span><span class="e">Doors Open</span></li>
+            <li><span class="t">09:30</span><span class="e">Welcome &amp; Housekeeping</span></li>
+            <li><span class="t">09:45</span><span class="e">Session 1 &nbsp;·&nbsp; Migration &amp; Workflow</span></li>
+            <li><span class="t">12:00</span><span class="e">Session 2 &nbsp;·&nbsp; Scaling Projects</span></li>
+            <li><span class="t">13:45</span><span class="e">Lunch</span></li>
+            <li><span class="t">14:45</span><span class="e">Janeway Reports &nbsp;·&nbsp; State of Janeway</span></li>
+            <li><span class="t">15:30</span><span class="e">ROR Integration &amp; Metadata</span></li>
+            <li><span class="t">16:15</span><span class="e">Close of Day 1</span></li>
+            <li class="slide-prog-social"><span class="t">Evening</span><span class="e">Drinks &amp; food &nbsp;·&nbsp; Buswells Hotel Bar</span></li>
+          </ul>
+        </div>
+
+        <p class="slide-sponsors-foot">
+          Full programme at <strong>thelowerdecks.janeway.systems</strong>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Slide 5: Day 2 programme ───────────────────────── -->
+  <section class="slide" data-slide="5" aria-label="Day 2 programme">
+    <div class="slide-frame">
+      <div class="slide-programme">
+        <div class="slide-sponsors-head">
+          <img src="static/Janeway_RGB Logo - White.svg" alt="Janeway">
+          <div class="slide-logos-sep" aria-hidden="true"></div>
+          <img src="static/OLH_RGB Symbol - White.png" alt="Open Library of Humanities">
+          <span class="slide-sponsors-event">The Lower Decks 2.0 &nbsp;·&nbsp; May 21–22, 2026</span>
+        </div>
+
+        <div class="slide-prog-body">
+          <div class="slide-prog-head">
+            <span class="slide-sponsors-label">Day 2 &nbsp;·&nbsp; Friday 22 May</span>
+            <h2 class="slide-prog-title">Problems, Solutions &amp; Innovations.</h2>
+          </div>
+          <ul class="slide-prog-list">
+            <li><span class="t">09:00</span><span class="e">Doors Open</span></li>
+            <li><span class="t">09:30</span><span class="e">Recap &amp; Day Framing</span></li>
+            <li><span class="t">09:45</span><span class="e">Session 3 &nbsp;·&nbsp; Modern Problems, Modern Solutions</span></li>
+            <li><span class="t">12:00</span><span class="e">Session 4 &nbsp;·&nbsp; Exciting Janeway Innovations</span></li>
+            <li><span class="t">13:45</span><span class="e">Lunch</span></li>
+            <li><span class="t">14:45</span><span class="e">Session 5 &nbsp;·&nbsp; Open Discussion &amp; Community</span></li>
+            <li class="slide-prog-keynote"><span class="t">16:15</span><span class="e">Keynote &nbsp;·&nbsp; Kathleen Fitzpatrick</span></li>
+            <li><span class="t">16:45</span><span class="e">Close</span></li>
+          </ul>
+        </div>
+
+        <p class="slide-sponsors-foot">
+          Full programme at <strong>thelowerdecks.janeway.systems</strong>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Slide 6: T-Shirt Contest ───────────────────────── -->
+  <section class="slide" data-slide="6" aria-label="T-Shirt Contest slide">
+    <div class="slide-frame">
+      <div class="slide-contest">
+        <div class="slide-sponsors-head">
+          <img src="static/Janeway_RGB Logo - White.svg" alt="Janeway">
+          <div class="slide-logos-sep" aria-hidden="true"></div>
+          <img src="static/OLH_RGB Symbol - White.png" alt="Open Library of Humanities">
+          <span class="slide-sponsors-event">The Lower Decks 2.0 &nbsp;·&nbsp; May 21–22, 2026</span>
+        </div>
+
+        <div class="slide-contest-body">
+          <span class="slide-sponsors-label">For our online attendees</span>
+          <h2 class="slide-contest-title">Win a Janeway T-Shirt.</h2>
+          <p class="slide-contest-lede">Two winners. Colour of your choice. Posted to you after the event.</p>
+
+          <div class="slide-contest-cats">
+            <div class="slide-contest-cat">
+              <p class="slide-contest-cat-title">Most spirited Discord contributor</p>
+              <p class="slide-contest-cat-desc">Bring the energy &nbsp;·&nbsp; pet photos, reaction gifs, and good banter all count.</p>
+            </div>
+            <div class="slide-contest-cat">
+              <p class="slide-contest-cat-title">Best question-not-a-comment</p>
+              <p class="slide-contest-cat-desc">For the sharpest, most thoughtful question put to a panel speaker.</p>
+            </div>
+          </div>
+        </div>
+
+        <p class="slide-sponsors-foot">
+          Winners announced on Discord after Friday's keynote &nbsp;·&nbsp; <strong>#JanewayOA26</strong>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="slide-controls" aria-label="Slide controls">
+    <button type="button" id="prev" aria-label="Previous slide">&larr;</button>
+    <span class="slide-counter" id="counter">1 / 6</span>
+    <button type="button" id="play" aria-label="Pause auto-cycle">Pause</button>
+    <button type="button" id="next" aria-label="Next slide">&rarr;</button>
+    <button type="button" id="fs" aria-label="Toggle fullscreen">Full</button>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const counter = document.getElementById('counter');
+  const playBtn = document.getElementById('play');
+  const total = slides.length;
+  const INTERVAL_MS = 8000;
+  const STORAGE_KEY = 'tld20-holding-playing';
+  let current = 0;
+  let timer = null;
+  let playing = (function () {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored === 'false') return false;
+      if (stored === 'true') return true;
+    } catch (e) {}
+    return true;
+  })();
+
+  function show(i) {
+    current = (i + total) % total;
+    slides.forEach((s, idx) => s.classList.toggle('is-active', idx === current));
+    counter.textContent = (current + 1) + ' / ' + total;
+    history.replaceState(null, '', '#' + (current + 1));
+  }
+
+  function startTimer() {
+    stopTimer();
+    if (playing) timer = setInterval(() => show(current + 1), INTERVAL_MS);
+  }
+  function stopTimer() {
+    if (timer) { clearInterval(timer); timer = null; }
+  }
+  function restartTimer() {
+    if (playing) startTimer();
+  }
+  function togglePlay() {
+    playing = !playing;
+    try { localStorage.setItem(STORAGE_KEY, String(playing)); } catch (e) {}
+    playBtn.textContent = playing ? 'Pause' : 'Play';
+    if (playing) startTimer(); else stopTimer();
+  }
+
+  const fromHash = parseInt((location.hash || '#1').slice(1), 10);
+  if (!isNaN(fromHash) && fromHash >= 1 && fromHash <= total) {
+    show(fromHash - 1);
+  } else {
+    show(0);
+  }
+  window.addEventListener('hashchange', () => {
+    const n = parseInt(location.hash.slice(1), 10);
+    if (!isNaN(n) && n >= 1 && n <= total) { show(n - 1); restartTimer(); }
+  });
+
+  document.getElementById('prev').addEventListener('click', () => { show(current - 1); restartTimer(); });
+  document.getElementById('next').addEventListener('click', () => { show(current + 1); restartTimer(); });
+  document.getElementById('fs').addEventListener('click', () => {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+    else document.exitFullscreen();
+  });
+  playBtn.textContent = playing ? 'Pause' : 'Play';
+  playBtn.addEventListener('click', togglePlay);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown') {
+      e.preventDefault(); show(current + 1); restartTimer();
+    } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+      e.preventDefault(); show(current - 1); restartTimer();
+    } else if (e.key === ' ') {
+      e.preventDefault(); togglePlay();
+    } else if (e.key === 'Home') {
+      show(0); restartTimer();
+    } else if (e.key === 'End') {
+      show(total - 1); restartTimer();
+    } else if (e.key === 'f' || e.key === 'F') {
+      document.getElementById('fs').click();
+    }
+  });
+
+  // Click anywhere on the deck (but not buttons) to advance.
+  document.getElementById('deck').addEventListener('click', (e) => {
+    if (e.target.closest('button')) return;
+    show(current + 1);
+    restartTimer();
+  });
+
+  // Pause when the page is hidden (e.g., tab switched away).
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stopTimer();
+    else if (playing) startTimer();
+  });
+
+  startTimer();
+})();
+</script>
+
+</body>
+</html>
