@@ -521,7 +521,7 @@
     <div class="slide-inner">
       <p class="section-label">Where we left off</p>
       <h2 id="slide-2-title">Two years since the last Lower Decks.</h2>
-      <p>The first Lower Decks symposium in 2023 marked Janeway's tenth anniversary. Since then, the platform has crossed two minor versions, picked up a new theme, a new editorial stage, a new product website &mdash; and, for the first time, a community governance board.</p>
+      <p>Since the first Lower Decks symposium in 2023, the platform has crossed two minor versions, picked up a new theme, a new editorial stage, a new product website &mdash; and, for the first time, a community governance board.</p>
       <p>This is what changed.</p>
     </div>
     <div class="slide-footer"><span>Janeway Report 2026</span><span class="num">02</span></div>
@@ -593,11 +593,40 @@
     <div class="slide-footer"><span>Top OLH repos by PR activity</span><span class="num">06</span></div>
   </section>
 
-  <!-- ───────────── 7. v1.8 PARIS ───────────── -->
-  <section class="slide teal" id="slide-7" aria-labelledby="slide-7-title">
+  <!-- ───────────── 7. NEW WEBSITE ───────────── -->
+  <section class="slide sand" id="slide-7" aria-labelledby="slide-7-title">
+    <div class="slide-inner">
+      <p class="section-label">Community surface</p>
+      <h2 id="slide-7-title">A new Janeway website.</h2>
+      <p>The Janeway product and support sites have been rebuilt in a new repo &mdash; <strong>memory-alpha</strong> &mdash; the second-busiest repo in the org over the last two years.</p>
+      <div class="stat-grid">
+        <div class="stat"><span class="stat-num">97</span><span class="stat-label">PRs merged</span></div>
+        <div class="stat"><span class="stat-num">65</span><span class="stat-label">Issues closed</span></div>
+        <div class="stat"><span class="stat-num">2nd</span><span class="stat-label">Busiest OLH repo</span></div>
+      </div>
+      <p>One place for documentation, news, and community resources &mdash; outside the Janeway monolith.</p>
+      <p><strong>System documentation is being rewritten</strong> from the ground up &mdash; landing on the new site soon.</p>
+    </div>
+    <div class="slide-footer"><span>github.com/openlibhums/memory-alpha</span><span class="num">07</span></div>
+  </section>
+
+  <!-- ───────────── 8. WEBSITE SCREENSHOT ───────────── -->
+  <section class="slide dark showcase-slide site-showcase" id="slide-8" aria-labelledby="slide-8-title">
+    <div class="slide-inner">
+      <p class="section-label">janeway.systems</p>
+      <h2 id="slide-8-title" class="visually-hidden">Janeway website &mdash; homepage.</h2>
+      <figure class="shot site-shot-full">
+        <img src="static/site/janeway-homepage.png" alt="Janeway website homepage. Dark background with the Janeway logo, the strapline 'A new way — Open source. Open access. Always.', a Rainbow Road motif, and 'Brought to you by OLH at Birkbeck'.">
+      </figure>
+    </div>
+    <div class="slide-footer"><span>janeway.systems &middot; Brought to you by OLH at Birkbeck</span><span class="num">08</span></div>
+  </section>
+
+  <!-- ───────────── 9. v1.8 PARIS ───────────── -->
+  <section class="slide teal" id="slide-9" aria-labelledby="slide-9-title">
     <div class="slide-inner">
       <p class="section-label">Release</p>
-      <h2 id="slide-7-title">v1.8.0 &mdash; Paris.</h2>
+      <h2 id="slide-9-title">v1.8.0 &mdash; Paris.</h2>
       <p>The biggest release in years. Three platform-level shifts plus a long tail of polish, accessibility, and bug fixes.</p>
       <ul class="bullets">
         <li><strong>ROR integration</strong> &mdash; affiliations are now first-class, registered, exportable data.</li>
@@ -605,14 +634,14 @@
         <li><strong>Typesetting in core</strong> &mdash; the standalone plugin is folded into the platform and deprecated.</li>
       </ul>
     </div>
-    <div class="slide-footer"><span>v1.8.0-RC-11 · "Paris"</span><span class="num">07</span></div>
+    <div class="slide-footer"><span>v1.8.0-RC-11 · "Paris"</span><span class="num">09</span></div>
   </section>
 
-  <!-- ───────────── 8. ROR DEEP DIVE ───────────── -->
-  <section class="slide dark" id="slide-8" aria-labelledby="slide-8-title">
+  <!-- ───────────── 10. ROR DEEP DIVE ───────────── -->
+  <section class="slide dark" id="slide-10" aria-labelledby="slide-10-title">
     <div class="slide-inner">
       <p class="section-label">v1.8 · Highlight</p>
-      <h2 id="slide-8-title">ROR &mdash; affiliations, finally first-class.</h2>
+      <h2 id="slide-10-title">ROR &mdash; affiliations, finally first-class.</h2>
       <ul class="bullets">
         <li>New <code>Organization</code> model with a <code>RORStatus</code> lifecycle, plus <code>OrganizationName</code>, <code>RORImport</code> and <code>RORImportError</code> for audit trails.</li>
         <li>ROR data imported on install and refreshed monthly; atomic, chunked bulk imports; MySQL-safe; batch size is a configurable setting.</li>
@@ -629,14 +658,14 @@
         <a class="pr-chip" href="https://github.com/openlibhums/janeway/pull/4836">#4836 docs</a>
       </div>
     </div>
-    <div class="slide-footer"><span>Joe Muller's talk is right after this one</span><span class="num">08</span></div>
+    <div class="slide-footer"><span>Joe Muller's talk is right after this one</span><span class="num">10</span></div>
   </section>
 
-  <!-- ───────────── 9. ROR SHOWCASE ───────────── -->
-  <section class="slide dark showcase-slide" id="slide-9" aria-labelledby="slide-9-title">
+  <!-- ───────────── 11. ROR SHOWCASE ───────────── -->
+  <section class="slide dark showcase-slide" id="slide-11" aria-labelledby="slide-11-title">
     <div class="slide-inner">
       <p class="section-label">v1.8 · ROR in the UI</p>
-      <h2 id="slide-9-title">A ROR ID next to every affiliation.</h2>
+      <h2 id="slide-11-title">A ROR ID next to every affiliation.</h2>
       <div class="shot-grid">
         <figure class="shot">
           <img src="static/screenshots/ror.png" alt="Affiliation edit form for 'Birkbeck, University of London' on a submitted article. Related info panel on the left shows the author, email, ORCID and article details. Affiliation details on the right show the organisation name, location (London, United Kingdom), and a linked ROR identifier https://ror.org/02mb95055, plus role, department, start and end date fields and an 'Is primary' toggle.">
@@ -648,14 +677,14 @@
         </figure>
       </div>
     </div>
-    <div class="slide-footer"><span>v1.8 · ROR &amp; affiliations</span><span class="num">09</span></div>
+    <div class="slide-footer"><span>v1.8 · ROR &amp; affiliations</span><span class="num">11</span></div>
   </section>
 
-  <!-- ───────────── 10. CREDIT ───────────── -->
-  <section class="slide sand" id="slide-10" aria-labelledby="slide-10-title">
+  <!-- ───────────── 12. CREDIT ───────────── -->
+  <section class="slide sand" id="slide-12" aria-labelledby="slide-12-title">
     <div class="slide-inner">
       <p class="section-label">v1.8 · Highlight</p>
-      <h2 id="slide-10-title">CRediT &mdash; structured contributor roles.</h2>
+      <h2 id="slide-12-title">CRediT &mdash; structured contributor roles.</h2>
       <ul class="bullets">
         <li>Full <strong>CRediT Taxonomy</strong> support for contributors &mdash; 14 standardised contributor roles.</li>
         <li>Captured during submission, alongside ROR and ORCiD, as part of a unified author metadata interface.</li>
@@ -668,27 +697,27 @@
         <a class="pr-chip" href="https://github.com/openlibhums/janeway/pull/4697">#4697 author interface</a>
       </div>
     </div>
-    <div class="slide-footer"><span>v1.8 · CRediT Taxonomy</span><span class="num">10</span></div>
+    <div class="slide-footer"><span>v1.8 · CRediT Taxonomy</span><span class="num">12</span></div>
   </section>
 
-  <!-- ───────────── 11. CREDIT SHOWCASE ───────────── -->
-  <section class="slide sand showcase-slide" id="slide-11" aria-labelledby="slide-11-title">
+  <!-- ───────────── 13. CREDIT SHOWCASE ───────────── -->
+  <section class="slide sand showcase-slide" id="slide-13" aria-labelledby="slide-13-title">
     <div class="slide-inner">
       <p class="section-label">v1.8 · CRediT in the UI</p>
-      <h2 id="slide-11-title">Roles, surfaced in the author block.</h2>
+      <h2 id="slide-13-title">Roles, surfaced in the author block.</h2>
       <figure class="shot shot-wide">
         <img src="static/screenshots/credit.png" alt="Author Information panel for Andy JR Byers, showing email, ORCID, affiliation linked to ROR, and a grid of CRediT roles to add: Data Curation, Methodology, Supervision, Writing - Review &amp; Editing, Formal Analysis, Project Administration, Validation, Funding Acquisition, Resources, Visualization, Investigation, Software, Writing - Original Draft. A link to 'Learn about CRediT roles' sits beneath the grid.">
         <figcaption>All 14 CRediT contributor roles &mdash; one click each, alongside ORCiD and ROR.</figcaption>
       </figure>
     </div>
-    <div class="slide-footer"><span>v1.8 · CRediT Taxonomy</span><span class="num">11</span></div>
+    <div class="slide-footer"><span>v1.8 · CRediT Taxonomy</span><span class="num">13</span></div>
   </section>
 
-  <!-- ───────────── 12. TYPESETTING ───────────── -->
-  <section class="slide dark" id="slide-12" aria-labelledby="slide-12-title">
+  <!-- ───────────── 14. TYPESETTING ───────────── -->
+  <section class="slide dark" id="slide-14" aria-labelledby="slide-14-title">
     <div class="slide-inner">
       <p class="section-label">v1.8 · Highlight</p>
-      <h2 id="slide-12-title">Typesetting joins the platform.</h2>
+      <h2 id="slide-14-title">Typesetting joins the platform.</h2>
       <ul class="bullets">
         <li>The Typesetting plugin is now a <strong>core workflow element</strong>, integrated via subtree merge with full history preserved.</li>
         <li>The standalone plugin is deprecated &mdash; it can be uninstalled before upgrading.</li>
@@ -703,14 +732,14 @@
         <a class="pr-chip" href="https://github.com/openlibhums/janeway/pull/4973">#4973 plugin disable migration</a>
       </div>
     </div>
-    <div class="slide-footer"><span>v1.8 · Typesetting integration</span><span class="num">12</span></div>
+    <div class="slide-footer"><span>v1.8 · Typesetting integration</span><span class="num">14</span></div>
   </section>
 
-  <!-- ───────────── 13. PARIS HIDDEN GEMS ───────────── -->
-  <section class="slide sand" id="slide-13" aria-labelledby="slide-13-title">
+  <!-- ───────────── 15. PARIS HIDDEN GEMS ───────────── -->
+  <section class="slide sand" id="slide-15" aria-labelledby="slide-15-title">
     <div class="slide-inner">
       <p class="section-label">v1.8 · Hidden gems</p>
-      <h2 id="slide-13-title">The bits that don't make the headline.</h2>
+      <h2 id="slide-15-title">The bits that don't make the headline.</h2>
       <ul class="bullets">
         <li><strong>Triple-anonymous review.</strong> Section editors can no longer see author PII until review is complete &mdash; new security decorator, template tags, and PII-stripped email templates. Triple-anonymous is now a built-in option.</li>
         <li><strong>Repository submission review page.</strong> Authors get a final summary of metadata, authors and files (with back-links to fix mistakes) <em>before</em> their preprint goes in.</li>
@@ -732,14 +761,14 @@
         <a class="pr-chip" href="https://github.com/openlibhums/janeway/pull/4689">#4689 dates</a>
       </div>
     </div>
-    <div class="slide-footer"><span>v1.8 · the long tail</span><span class="num">13</span></div>
+    <div class="slide-footer"><span>v1.8 · the long tail</span><span class="num">15</span></div>
   </section>
 
-  <!-- ───────────── 14. v1.9 A11Y ───────────── -->
-  <section class="slide dark" id="slide-14" aria-labelledby="slide-14-title">
+  <!-- ───────────── 16. v1.9 A11Y ───────────── -->
+  <section class="slide dark" id="slide-16" aria-labelledby="slide-16-title">
     <div class="slide-inner">
       <p class="section-label">v1.9 · In flight</p>
-      <h2 id="slide-14-title">Accessibility, made measurable.</h2>
+      <h2 id="slide-16-title">Accessibility, made measurable.</h2>
       <div class="two-col a11y-cols">
         <div>
           <h3>The audit, in code</h3>
@@ -758,20 +787,20 @@
             <li><strong>Lightbox focus returns</strong> to its triggering element on close.</li>
             <li><strong>Page language follows translation</strong> &mdash; <code>&lt;html lang&gt;</code> updates as the UI language changes, including in print templates.</li>
             <li>Full-text-search pages, button semantics, pagination arrows, endnote backlinks, nav landmarks, list markup, reader page structure &mdash; all audited and fixed.</li>
-            <li>Per-theme dark / dyslexia / text-size controls landed in Clean and Material.</li>
+            <li>Per-theme dyslexia / text-size controls landed in Clean and Material.</li>
           </ul>
         </div>
       </div>
       <p class="a11y-tagline">Accessibility is no longer a one-off audit. It's a per-theme, version-stamped artefact &mdash; published on every site.</p>
     </div>
-    <div class="slide-footer"><span>v1.9 · WCAG 2.2 AA conformance</span><span class="num">14</span></div>
+    <div class="slide-footer"><span>v1.9 · WCAG 2.2 AA conformance</span><span class="num">16</span></div>
   </section>
 
-  <!-- ───────────── 15. CLARITY ───────────── -->
-  <section class="slide sand" id="slide-15" aria-labelledby="slide-15-title">
+  <!-- ───────────── 17. CLARITY ───────────── -->
+  <section class="slide sand" id="slide-17" aria-labelledby="slide-17-title">
     <div class="slide-inner">
       <p class="section-label">New theme</p>
-      <h2 id="slide-15-title">Clarity.</h2>
+      <h2 id="slide-17-title">Clarity.</h2>
       <p>A more modern theme for Janeway, with a <strong>switchable colour-palette system</strong> and a long list of accessibility improvements over the Clean theme.</p>
       <ul class="bullets">
         <li><strong>Four built-in palettes</strong> &mdash; <code>evergreen</code> (default), <code>ocean</code>, <code>cardinal</code>, and <code>paper</code> (white header for logo-led journals). Switchable per journal from Manager &rsaquo; All Settings.</li>
@@ -782,14 +811,14 @@
         <li><strong>Merging into core</strong> &mdash; Clarity will land in Janeway core and become the <strong>default theme</strong> for new journals.</li>
       </ul>
     </div>
-    <div class="slide-footer"><span>github.com/openlibhums/clarity</span><span class="num">15</span></div>
+    <div class="slide-footer"><span>github.com/openlibhums/clarity</span><span class="num">17</span></div>
   </section>
 
-  <!-- ───────────── 16. CLARITY IN PRODUCTION ───────────── -->
-  <section class="slide sand showcase-slide" id="slide-16" aria-labelledby="slide-16-title">
+  <!-- ───────────── 18. CLARITY IN PRODUCTION ───────────── -->
+  <section class="slide sand showcase-slide" id="slide-18" aria-labelledby="slide-18-title">
     <div class="slide-inner">
       <p class="section-label">Clarity in production</p>
-      <h2 id="slide-16-title">Front of house.</h2>
+      <h2 id="slide-18-title">Front of house.</h2>
       <div class="shot-grid">
         <figure class="shot">
           <img src="static/clarity/homepage.png" alt="Homepage of the Journal of Cultural Analytics on Clarity, with hero carousel and About this Journal block.">
@@ -801,14 +830,14 @@
         </figure>
       </div>
     </div>
-    <div class="slide-footer"><span>Journal of Cultural Analytics on Clarity</span><span class="num">16</span></div>
+    <div class="slide-footer"><span>Journal of Cultural Analytics on Clarity</span><span class="num">18</span></div>
   </section>
 
-  <!-- ───────────── 17. READING ON CLARITY ───────────── -->
-  <section class="slide sand showcase-slide" id="slide-17" aria-labelledby="slide-17-title">
+  <!-- ───────────── 19. READING ON CLARITY ───────────── -->
+  <section class="slide sand showcase-slide" id="slide-19" aria-labelledby="slide-19-title">
     <div class="slide-inner">
       <p class="section-label">Clarity in production</p>
-      <h2 id="slide-17-title">Reading &amp; navigating.</h2>
+      <h2 id="slide-19-title">Reading &amp; navigating.</h2>
       <div class="shot-grid">
         <figure class="shot">
           <img src="static/clarity/issue-page.png" alt="Single issue page on Clarity with article list and table-of-contents sidebar showing the issue archive.">
@@ -820,14 +849,14 @@
         </figure>
       </div>
     </div>
-    <div class="slide-footer"><span>Journal of Cultural Analytics on Clarity</span><span class="num">17</span></div>
+    <div class="slide-footer"><span>Journal of Cultural Analytics on Clarity</span><span class="num">19</span></div>
   </section>
 
-  <!-- ───────────── 18. SCREENING ───────────── -->
-  <section class="slide dark" id="slide-18" aria-labelledby="slide-18-title">
+  <!-- ───────────── 20. SCREENING ───────────── -->
+  <section class="slide dark" id="slide-20" aria-labelledby="slide-20-title">
     <div class="slide-inner">
       <p class="section-label">In development</p>
-      <h2 id="slide-18-title">Screening &mdash; a new editorial stage.</h2>
+      <h2 id="slide-20-title">Screening &mdash; a new editorial stage.</h2>
       <ul class="bullets">
         <li>The old <strong>Unassigned</strong> stage has been pulled out of the monolithic <code>review</code> app, renamed to <strong>Editor Assignment</strong>, and lives in its own <code>editor_assignment</code> app.</li>
         <li><strong>Screening</strong> is a brand-new, separate app.</li>
@@ -837,14 +866,14 @@
         <li><strong>Email previews</strong> before every editorial action, and proper <strong>withdrawal notifications</strong>.</li>
       </ul>
     </div>
-    <div class="slide-footer"><span>Coming to a Janeway near you</span><span class="num">18</span></div>
+    <div class="slide-footer"><span>Coming to a Janeway near you</span><span class="num">20</span></div>
   </section>
 
-  <!-- ───────────── 19. EDITORIAL WORKFLOW SHOWCASE ───────────── -->
-  <section class="slide dark showcase-slide" id="slide-19" aria-labelledby="slide-19-title">
+  <!-- ───────────── 21. EDITORIAL WORKFLOW SHOWCASE ───────────── -->
+  <section class="slide dark showcase-slide" id="slide-21" aria-labelledby="slide-21-title">
     <div class="slide-inner">
       <p class="section-label">In development</p>
-      <h2 id="slide-19-title">Editor Assignment, Screening &amp; Contacts.</h2>
+      <h2 id="slide-21-title">Editor Assignment, Screening &amp; Contacts.</h2>
       <div class="shot-grid shot-grid-3">
         <figure class="shot">
           <img src="static/screenshots/editor-assignment.png" alt="Editor Assignment dashboard listing five submissions with ID, title, submission date, main author and section columns.">
@@ -860,56 +889,104 @@
         </figure>
       </div>
     </div>
-    <div class="slide-footer"><span>Editorial workflow &mdash; the new shape</span><span class="num">19</span></div>
+    <div class="slide-footer"><span>Editorial workflow &mdash; the new shape</span><span class="num">21</span></div>
   </section>
 
-  <!-- ───────────── 20. TECHNICAL CHECKLIST ───────────── -->
-  <section class="slide sand showcase-slide" id="slide-20" aria-labelledby="slide-20-title">
+  <!-- ───────────── 22. TECHNICAL CHECKLIST ───────────── -->
+  <section class="slide sand showcase-slide" id="slide-22" aria-labelledby="slide-22-title">
     <div class="slide-inner">
       <p class="section-label">Screening · feature spotlight</p>
-      <h2 id="slide-20-title">Technical checklists, template-driven.</h2>
+      <h2 id="slide-22-title">Technical checklists, template-driven.</h2>
       <figure class="shot shot-wide">
         <img src="static/screenshots/technical-checklist.png" alt="Technical Checklist panel on a screening page. Header reads 'Editorial-only — not visible to screeners or authors. Template: Test.' A four-column table shows checkbox, item name, comment, and Completed by columns. Three rows list technical checklist items with comment bubbles; the first has an editor comment, the others are empty. A 'Change Template' button sits in the top right.">
         <figcaption>Editorial-only checklists &mdash; templated, per-item comments, audit-tracked by completer.</figcaption>
       </figure>
     </div>
-    <div class="slide-footer"><span>Screening &middot; technical checklist</span><span class="num">20</span></div>
+    <div class="slide-footer"><span>Screening &middot; technical checklist</span><span class="num">22</span></div>
   </section>
 
-  <!-- ───────────── 21. NEW WEBSITE ───────────── -->
-  <section class="slide sand" id="slide-21" aria-labelledby="slide-21-title">
-    <div class="slide-inner">
-      <p class="section-label">Community surface</p>
-      <h2 id="slide-21-title">A new Janeway website.</h2>
-      <p>The Janeway product and support sites have been rebuilt in a new repo &mdash; <strong>memory-alpha</strong> &mdash; the second-busiest repo in the org over the last two years.</p>
-      <div class="stat-grid">
-        <div class="stat"><span class="stat-num">97</span><span class="stat-label">PRs merged</span></div>
-        <div class="stat"><span class="stat-num">65</span><span class="stat-label">Issues closed</span></div>
-        <div class="stat"><span class="stat-num">2nd</span><span class="stat-label">Busiest OLH repo</span></div>
-      </div>
-      <p>One place for documentation, news, and community resources &mdash; outside the Janeway monolith.</p>
-      <p><strong>System documentation is being rewritten</strong> from the ground up &mdash; landing on the new site soon.</p>
-    </div>
-    <div class="slide-footer"><span>github.com/openlibhums/memory-alpha</span><span class="num">21</span></div>
-  </section>
-
-  <!-- ───────────── 22. WEBSITE SCREENSHOT ───────────── -->
-  <section class="slide dark showcase-slide site-showcase" id="slide-22" aria-labelledby="slide-22-title">
-    <div class="slide-inner">
-      <p class="section-label">janeway.systems</p>
-      <h2 id="slide-22-title" class="visually-hidden">Janeway website &mdash; homepage.</h2>
-      <figure class="shot site-shot-full">
-        <img src="static/site/janeway-homepage.png" alt="Janeway website homepage. Dark background with the Janeway logo, the strapline 'A new way — Open source. Open access. Always.', a Rainbow Road motif, and 'Brought to you by OLH at Birkbeck'.">
-      </figure>
-    </div>
-    <div class="slide-footer"><span>janeway.systems &middot; Brought to you by OLH at Birkbeck</span><span class="num">22</span></div>
-  </section>
-
-  <!-- ───────────── 23. BOARD ───────────── -->
+  <!-- ───────────── 23. ISOLINEAR ───────────── -->
   <section class="slide teal" id="slide-23" aria-labelledby="slide-23-title">
     <div class="slide-inner">
+      <p class="section-label">Plugin spotlight &middot; funded by UCL Press</p>
+      <h2 id="slide-23-title">Isolinear &mdash; preprints &amp; articles, wired together.</h2>
+      <ul class="bullets">
+        <li><strong>Publish a preprint from the journal workflow.</strong> At Editor Assignment, an editor can approve an article for preprint publication &mdash; Isolinear creates a <code>Preprint</code> in a headless Janeway repository, inheriting title, abstract, authors, keywords and licence from the article.</li>
+        <li><strong>Versions, end to end.</strong> During Review, editors can push a revised manuscript as a new <code>PreprintVersion</code> &mdash; same record, traceable history, same DOI lineage.</li>
+        <li><strong>PDF with a cover sheet.</strong> DOCX / RTF / ODT manuscripts are converted via Pandoc + XeTeX, then spliced together with a templated cover sheet on every version.</li>
+        <li><strong>Published peer reviews</strong> ride along with the preprint &mdash; readers get the article, its versions, <em>and</em> the reviewer reports in one place.</li>
+        <li><strong>Every preprint version gets its own Crossref DOI</strong> &mdash; distinct from the journal article, deposited automatically.</li>
+        <li><strong>Coming soon:</strong> an <strong>editorial history</strong> view &mdash; the full submission, review and publication timeline surfaced on the preprint record.</li>
+      </ul>
+      <div class="pr-chips">
+        <a class="pr-chip" href="https://github.com/openlibhums/isolinear">github.com/openlibhums/isolinear</a>
+      </div>
+    </div>
+    <div class="slide-footer"><span>Isolinear &middot; preprint / journal bridge</span><span class="num">23</span></div>
+  </section>
+
+  <!-- ───────────── 24. ISOLINEAR SHOWCASE ───────────── -->
+  <section class="slide dark showcase-slide" id="slide-24" aria-labelledby="slide-24-title">
+    <div class="slide-inner">
+      <p class="section-label">Isolinear in production</p>
+      <h2 id="slide-24-title">Versions and open peer review, in one place.</h2>
+      <div class="shot-grid">
+        <figure class="shot">
+          <img src="static/screenshots/isolinear-versions.png" alt="UCL Press preprint page for 'Numerical analysis on the improvement of sound insulation performance of plenum doors: effect of sound absorption and MPPs' on UCL Open Environment. The sidebar shows two preprint versions — Version 2 (latest, published 2026-03-05) and Version 1 (published 2025-11-07) — each with its own DOI and downloadable PDF.">
+          <figcaption>Two versions, two DOIs, one record &mdash; UCL Open Environment.</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="static/screenshots/isolinear-peer-review.png" alt="Same UCL Open Environment preprint page with an 'Open peer review from Simone Torresin' dialog open over the article. The review text discusses the FEM analysis and suggests improvements to the abstract, sentence clarity, and figures.">
+          <figcaption>Open peer reviews, published alongside the preprint.</figcaption>
+        </figure>
+      </div>
+    </div>
+    <div class="slide-footer"><span>uclopenenvironment.com &middot; powered by Isolinear</span><span class="num">24</span></div>
+  </section>
+
+  <!-- ───────────── 25. LINKED BOOKS ───────────── -->
+  <section class="slide sand" id="slide-25" aria-labelledby="slide-25-title">
+    <div class="slide-inner">
+      <p class="section-label">Core feature &middot; funded by Iowa State University Digital Press</p>
+      <h2 id="slide-25-title">Linking books with preprints &mdash; OERs, first-class.</h2>
+      <ul class="bullets">
+        <li><strong>Open Educational Resources</strong> &mdash; workbooks, exercises, datasets, supplementary materials &mdash; used to live inside book chapters as nameless files. They now get their own preprint record.</li>
+        <li><strong>Each OER has its own DOI</strong>, abstract, authors, licence, downloads, and metrics &mdash; independently citable, independently versioned.</li>
+        <li><strong>Linked Items.</strong> A new mechanism wires the OER back to its parent book or chapter &mdash; discoverable from both ends, citable in either direction.</li>
+        <li><strong>Built into core Janeway.</strong></li>
+      </ul>
+    </div>
+    <div class="slide-footer"><span>Iowa State University Digital Press</span><span class="num">25</span></div>
+  </section>
+
+  <!-- ───────────── 26. LINKED BOOKS SHOWCASE ───────────── -->
+  <section class="slide dark showcase-slide" id="slide-26" aria-labelledby="slide-26-title">
+    <div class="slide-inner">
+      <p class="section-label">Iowa State Digital Press &middot; in production</p>
+      <h2 id="slide-26-title">One book, many citable parts.</h2>
+      <div class="shot-grid shot-grid-3">
+        <figure class="shot">
+          <img src="static/screenshots/isudp-book.png" alt="Iowa State University Digital Press book page for 'Surviving Research Publication: A Guide for New Scholars' by Lily Compton, Kristin Terrill and Megan O'Donnell. The page lists download options, a description, publication details, and a chapter index where each chapter (Literature Reviews, Citations, Literature Searches, Demystifying the Publishing Process, Research Impact, Research Ethics, etc.) has its own DOI beneath the title.">
+          <figcaption>Book record &mdash; each chapter with its own DOI.</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="static/screenshots/isudp-linked-items.png" alt="A 'Linked Items' section on the same book page, listing 'Practice Citation Counts' as a related OER, followed by the citation block for the book.">
+          <figcaption><strong>Linked Items</strong> &mdash; OERs surfaced from the parent book.</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="static/screenshots/isudp-oer.png" alt="Standalone Student Guide page for 'Practice Citation Counts'. Notes that it is a Student Guide and not peer reviewed, links back to the published book version's DOI, lists authors Lily Compton, Megan N O'Donnell, Kristin Terrill, an abstract, a Download Student Guide button, and a Metadata block showing published date, license (Creative Commons Attribution-NonCommercial-ShareAlike 4.0), subjects, and metrics.">
+          <figcaption>Independent OER record &mdash; its own DOI, licence, metrics.</figcaption>
+        </figure>
+      </div>
+    </div>
+    <div class="slide-footer"><span>iastatedigitalpress.com &middot; linked OERs</span><span class="num">26</span></div>
+  </section>
+
+  <!-- ───────────── 27. BOARD ───────────── -->
+  <section class="slide teal" id="slide-27" aria-labelledby="slide-27-title">
+    <div class="slide-inner">
       <p class="section-label">Governance</p>
-      <h2 id="slide-23-title">The Janeway Publishing Technologies Board.</h2>
+      <h2 id="slide-27-title">The Janeway Publishing Technologies Board.</h2>
       <p>The <strong>JPTB</strong> is a strategic advisory body of the Open Library of Humanities. It provides long-term vision and expert guidance for the development of Janeway, and acts as a forum for discussion that helps keep the platform responsive to its global community of users and contributors.</p>
       <ul class="bullets">
         <li><strong>Strategic advice</strong> &mdash; on direction, technical priorities, and platform sustainability.</li>
@@ -919,14 +996,14 @@
         <li>Sits alongside the OLH Academic Advisory Board and Library Board within the wider OLH governance.</li>
       </ul>
     </div>
-    <div class="slide-footer"><span>Community &amp; Governance</span><span class="num">23</span></div>
+    <div class="slide-footer"><span>Community &amp; Governance</span><span class="num">27</span></div>
   </section>
 
-  <!-- ───────────── 24. BOARD MEMBERS ───────────── -->
-  <section class="slide sand board-slide" id="slide-24" aria-labelledby="slide-24-title">
+  <!-- ───────────── 28. BOARD MEMBERS ───────────── -->
+  <section class="slide sand board-slide" id="slide-28" aria-labelledby="slide-28-title">
     <div class="slide-inner">
       <p class="section-label">Membership</p>
-      <h2 id="slide-24-title">Board members.</h2>
+      <h2 id="slide-28-title">Board members.</h2>
       <ul class="board-grid">
         <li class="board-member">
           <img src="static/pub-tech-board/chad-nelson.jpg" alt="">
@@ -962,14 +1039,14 @@
         </li>
       </ul>
     </div>
-    <div class="slide-footer"><span>JPTB · 2026 membership</span><span class="num">24</span></div>
+    <div class="slide-footer"><span>JPTB · 2026 membership</span><span class="num">28</span></div>
   </section>
 
-  <!-- ───────────── 25. WHAT'S NEXT ───────────── -->
-  <section class="slide dark" id="slide-25" aria-labelledby="slide-25-title">
+  <!-- ───────────── 29. WHAT'S NEXT ───────────── -->
+  <section class="slide dark" id="slide-29" aria-labelledby="slide-29-title">
     <div class="slide-inner">
       <p class="section-label">Looking ahead</p>
-      <h2 id="slide-25-title">What's next.</h2>
+      <h2 id="slide-29-title">What's next.</h2>
       <ul class="bullets">
         <li><strong>v1.8.0 Paris</strong> &mdash; final release after the symposium.</li>
         <li><strong>v1.9</strong> &mdash; accessibility-first release, with VPAT conformance per theme.</li>
@@ -979,11 +1056,11 @@
         <li><strong>Board</strong> formalising its first work programme.</li>
       </ul>
     </div>
-    <div class="slide-footer"><span>Roadmap</span><span class="num">25</span></div>
+    <div class="slide-footer"><span>Roadmap</span><span class="num">29</span></div>
   </section>
 
-  <!-- ───────────── 26. THANKS ───────────── -->
-  <section class="slide dark closing" id="slide-26" aria-labelledby="slide-26-title">
+  <!-- ───────────── 30. THANKS ───────────── -->
+  <section class="slide dark closing" id="slide-30" aria-labelledby="slide-30-title">
     <div class="hero-bg" aria-hidden="true">
       <img class="road" src="static/rainbow-road.svg" alt="">
       <div class="c1"></div>
@@ -991,7 +1068,7 @@
     </div>
     <div class="slide-inner">
       <p class="section-label" style="text-align:center;">Thank you</p>
-      <p id="slide-26-title" class="thanks">To everyone who shipped this year.</p>
+      <p id="slide-30-title" class="thanks">To everyone who shipped this year.</p>
       <p class="deck-sub" style="text-align:center;">
         joemull · ajrbyers · StephDriver · mauromsl · S-Haime ·<br>
         Astronaut-resting · MartinPaulEve · yakky · everreau ·<br>
@@ -1000,7 +1077,7 @@
       </p>
       <p class="handle">#JanewayOA26</p>
     </div>
-    <div class="slide-footer"><span>The State of Janeway · TLD 2.0</span><span class="num">26</span></div>
+    <div class="slide-footer"><span>The State of Janeway · TLD 2.0</span><span class="num">30</span></div>
   </section>
 
 </main>
