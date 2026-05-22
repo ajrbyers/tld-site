@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linking Books with Preprints · TLD 2.0</title>
+  <meta name="description" content="A walkthrough: linking a book record to a preprint in Janeway's Books plugin, so the relationship appears on both ends.">
+  <link rel="stylesheet" href="static/style.css">
+  <style>
+    /* ─── Slide deck additions ─────────────────────────────────── */
+    html { scroll-snap-type: y mandatory; }
+    main.deck { display: block; }
+
+    .slide {
+      min-height: 100svh;
+      padding: 4rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      position: relative;
+      overflow: hidden;
+    }
+    .slide-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      width: 100%;
+      position: relative;
+      z-index: 2;
+    }
+
+    .slide.dark { background: var(--dark); color: var(--white); }
+    .slide.sand { background: var(--sand); color: var(--dark); }
+    .slide.teal { background: var(--teal); color: var(--white); }
+
+    .slide .section-label { margin-bottom: 1.25rem; }
+    .slide.dark .section-label,
+    .slide.teal .section-label { color: var(--gold); }
+    .slide.sand .section-label { color: var(--teal); }
+
+    .slide h2 {
+      font-size: clamp(1.6rem, 4.5vw, 2.75rem);
+      line-height: 1.15;
+      margin-bottom: 1.75rem;
+    }
+    .slide.sand h2 { color: var(--dark); }
+    .slide.teal h2 { color: var(--white); }
+
+    .slide h3 {
+      font-size: clamp(1.05rem, 2vw, 1.25rem);
+      margin: 0 0 .6rem;
+    }
+    .slide.sand h3 { color: var(--dark); }
+
+    .slide p, .slide li {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(.92rem, 1.55vw, 1.05rem);
+      line-height: 1.7;
+    }
+    .slide.dark p, .slide.dark li,
+    .slide.teal p, .slide.teal li { color: var(--white); }
+    .slide.sand p, .slide.sand li { color: var(--dark); }
+    .slide p + p, .slide ul + p { margin-top: 1rem; }
+
+    .slide ul { list-style: none; }
+    .slide ul.bullets { display: flex; flex-direction: column; gap: .8rem; }
+    .slide ul.bullets li {
+      padding-left: 1.6rem;
+      position: relative;
+    }
+    .slide ul.bullets li::before {
+      content: "";
+      position: absolute;
+      left: 0; top: .6rem;
+      width: .55rem; height: .55rem;
+      background: var(--gold);
+    }
+    .slide.sand ul.bullets li::before { background: var(--teal); }
+
+    /* Step number badge */
+    .step-badge {
+      display: inline-block;
+      font-family: 'Space Mono', monospace;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      padding: .25rem .55rem;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      margin-right: .6rem;
+    }
+    .slide.sand .step-badge { border-color: var(--teal); color: var(--teal); }
+
+    /* Hero title slide */
+    .title-slide .deck-title {
+      font-size: clamp(2.4rem, 7vw, 4.25rem);
+      line-height: 1.05;
+      font-weight: 700;
+      margin: 0 0 1rem;
+    }
+    .title-slide .deck-sub {
+      font-family: 'Space Mono', monospace;
+      font-size: clamp(.95rem, 2vw, 1.15rem);
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: 2.5rem;
+    }
+    .title-slide .deck-meta {
+      display: inline-block;
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      color: var(--gold);
+      border-top: 2px solid var(--gold);
+      padding-top: .5rem;
+    }
+    .title-slide .hero-logos { margin-bottom: 3rem; }
+
+    /* Slide counter / footer */
+    .slide-footer {
+      position: absolute;
+      left: 0; right: 0; bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 1.5rem;
+      font-family: 'Space Mono', monospace;
+      font-size: .72rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .slide.dark .slide-footer,
+    .slide.teal .slide-footer { color: var(--muted); }
+    .slide.sand .slide-footer { color: var(--teal); opacity: .7; }
+    .slide-footer .num::before { content: "·  "; }
+
+    /* Screenshot showcase slides */
+    .slide.showcase-slide { padding: 2.5rem 1.5rem; }
+    .slide.showcase-slide .slide-inner { max-width: 1200px; }
+    .slide.showcase-slide h2 { margin-bottom: 1.25rem; }
+    .slide.showcase-slide .section-label { margin-bottom: .75rem; }
+    .shot-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+    @media (max-width: 760px) { .shot-grid { grid-template-columns: 1fr; } }
+    .shot.shot-wide {
+      max-width: 980px;
+      margin: 0 auto;
+    }
+    .shot.shot-wide img {
+      max-height: 64vh;
+      width: 100%;
+      object-fit: contain;
+      background: var(--white);
+    }
+    .shot { margin: 0; }
+    .shot img {
+      width: 100%;
+      height: auto;
+      display: block;
+      background: var(--white);
+      border: 1px solid rgba(54,86,95,.18);
+      box-shadow: 0 12px 32px rgba(58,57,53,.18);
+      cursor: zoom-in;
+      transition: transform .15s ease;
+    }
+    .shot img:hover { transform: translateY(-2px); }
+    .shot img:focus-visible {
+      outline: 3px solid var(--gold);
+      outline-offset: 4px;
+    }
+    .shot figcaption {
+      font-family: 'Space Mono', monospace;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+      color: var(--teal);
+      margin-top: .65rem;
+    }
+    .slide.dark .shot figcaption,
+    .slide.teal .shot figcaption { color: var(--gold); }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 14, 12, .92);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 2.5rem;
+      z-index: 1000;
+      cursor: zoom-out;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      background: var(--white);
+      box-shadow: 0 24px 64px rgba(0,0,0,.6);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      width: 2.5rem;
+      height: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-family: 'Space Mono', monospace;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+    .lightbox-close:hover { background: var(--gold); color: var(--dark); }
+    .lightbox-caption {
+      position: absolute;
+      left: 2.5rem;
+      right: 2.5rem;
+      bottom: 1.25rem;
+      text-align: center;
+      font-family: 'Space Mono', monospace;
+      font-size: .8rem;
+      letter-spacing: .04em;
+      color: var(--muted);
+      pointer-events: none;
+    }
+    @media print { .lightbox { display: none !important; } }
+
+    .visually-hidden {
+      position: absolute !important;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0);
+      white-space: nowrap; border: 0;
+    }
+
+    /* Closing slide */
+    .closing { text-align: center; }
+    .closing .thanks {
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      font-weight: 700;
+      margin-bottom: 1.25rem;
+    }
+    .closing .handle {
+      font-family: 'Space Mono', monospace;
+      color: var(--gold);
+      letter-spacing: .06em;
+      font-weight: 700;
+    }
+
+    /* Print: one slide per page */
+    @media print {
+      html, body { background: var(--dark); }
+      html { scroll-snap-type: none; }
+      .slide {
+        min-height: auto;
+        height: 100vh;
+        page-break-after: always;
+        break-after: page;
+      }
+      .slide-footer { position: static; padding-top: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<a href="#slide-1" class="skip">Skip to content</a>
+
+<main class="deck">
+
+  <!-- ───────────── 1. TITLE ───────────── -->
+  <section class="slide dark title-slide" id="slide-1" aria-labelledby="slide-1-title">
+    <div class="hero-bg" aria-hidden="true">
+      <img class="road" src="static/rainbow-road.svg" alt="">
+      <div class="c1"></div>
+      <div class="c2"></div>
+    </div>
+    <div class="slide-inner">
+      <div class="hero-logos">
+        <img src="static/Janeway_RGB Logo - White.svg" alt="Janeway">
+      </div>
+      <p class="section-label">Linked Items · Walkthrough</p>
+      <h1 id="slide-1-title" class="deck-title">Linking books<br>to preprints.</h1>
+      <p class="deck-sub">
+        Link an OER in the Books plugin to a preprint in the repository.
+      </p>
+      <p class="deck-meta">A short walkthrough</p>
+    </div>
+    <div class="slide-footer"><span>The Lower Decks 2.0</span><span class="num">01</span></div>
+  </section>
+
+  <!-- ───────────── 2. THE PROCESS ───────────── -->
+  <section class="slide sand" id="slide-2" aria-labelledby="slide-2-title">
+    <div class="slide-inner">
+      <p class="section-label">The process</p>
+      <h2 id="slide-2-title">Four steps.</h2>
+      <ul class="bullets">
+        <li><strong>1. Open the book</strong> in the Books plugin.</li>
+        <li><strong>2. Open the preprint</strong> in the repository.</li>
+        <li><strong>3. Link them</strong> from the book's <em>Manage Linked Preprints</em> page.</li>
+        <li><strong>4. The link shows up on both pages</strong>, the book and the preprint.</li>
+      </ul>
+    </div>
+    <div class="slide-footer"><span>Walkthrough · overview</span><span class="num">02</span></div>
+  </section>
+
+  <!-- ───────────── 3. STEP 1 INTRO ───────────── -->
+  <section class="slide teal" id="slide-3" aria-labelledby="slide-3-title">
+    <div class="slide-inner">
+      <p class="section-label"><span class="step-badge">Step 1</span>Open the book</p>
+      <h2 id="slide-3-title">Pick a book in the Books plugin.</h2>
+      <p>Here's a book on the press, with a cover, description and publication details. No linked items yet.</p>
+    </div>
+    <div class="slide-footer"><span>Step 1 · the book</span><span class="num">03</span></div>
+  </section>
+
+  <!-- ───────────── 4. STEP 1 SCREENSHOT ───────────── -->
+  <section class="slide dark showcase-slide" id="slide-4" aria-labelledby="slide-4-title">
+    <div class="slide-inner">
+      <p class="section-label"><span class="step-badge">Step 1</span>The book page</p>
+      <h2 id="slide-4-title" class="visually-hidden">Book page before linking.</h2>
+      <figure class="shot shot-wide">
+        <img src="static/linked-books/01-book-page.png" alt="Open Textbooks page for 'Two Become One: A Transporter Accident Memoir by Tuvix', authored by Tu Vok and Nee Lix. Shows the cover image, description starting 'In the span of two weeks, I lived an entire life.', and Publication Details: Published 1989-07-26, Publisher Starfleet, Location San Francisco, Peer Review yes, Copyright Tuvix. No linked items section yet.">
+        <figcaption>The book page. Nothing linked yet.</figcaption>
+      </figure>
+    </div>
+    <div class="slide-footer"><span>Step 1 · book page · before</span><span class="num">04</span></div>
+  </section>
+
+  <!-- ───────────── 5. STEP 2 INTRO ───────────── -->
+  <section class="slide sand" id="slide-5" aria-labelledby="slide-5-title">
+    <div class="slide-inner">
+      <p class="section-label"><span class="step-badge">Step 2</span>Open the preprint</p>
+      <h2 id="slide-5-title">Pick a preprint in the repository.</h2>
+      <p>This one's a Simulation called <em>Appendix C, Listing 3</em>. It has its own authors, abstract, downloads, licence and DOI, just like any other preprint.</p>
+    </div>
+    <div class="slide-footer"><span>Step 2 · the preprint</span><span class="num">05</span></div>
+  </section>
+
+  <!-- ───────────── 6. STEP 2 SCREENSHOT ───────────── -->
+  <section class="slide sand showcase-slide" id="slide-6" aria-labelledby="slide-6-title">
+    <div class="slide-inner">
+      <p class="section-label"><span class="step-badge">Step 2</span>The preprint page</p>
+      <h2 id="slide-6-title" class="visually-hidden">Preprint page before linking.</h2>
+      <figure class="shot shot-wide">
+        <img src="static/linked-books/04-preprint-page.png" alt="Preprint page for 'Appendix C, Listing 3', tagged Simulation. Shows it is version 1, lists Admin Tech as author, abstract about reconstructing transporter buffer state at stardate 49655.2 from Voyager pattern logs, and a data table of stardate, day, vulcan/talaxian/emergent traits percentages. Sidebar shows Download Simulation, Title 'Beirman and Gilbert, Food Preparation Lab Manual', and metadata including publication date, license CC BY 4.0, subjects Technology &amp; Engineering, keywords buffer, transporter.">
+        <figcaption>The preprint page. A normal preprint in the repository.</figcaption>
+      </figure>
+    </div>
+    <div class="slide-footer"><span>Step 2 · preprint page · before</span><span class="num">06</span></div>
+  </section>
+
+  <!-- ───────────── 7. STEP 3 INTRO ───────────── -->
+  <section class="slide teal" id="slide-7" aria-labelledby="slide-7-title">
+    <div class="slide-inner">
+      <p class="section-label"><span class="step-badge">Step 3</span>Link them</p>
+      <h2 id="slide-7-title">Linking happens in the Books plugin.</h2>
+      <p>Edit the book. There's a new <strong>Linked Preprints</strong> panel next to Contributors, Formats and Chapters, with a <em>Manage Linked Preprints</em> link.</p>
+      <p>It opens a page with two columns: what's linked, and what's available to link.</p>
+    </div>
+    <div class="slide-footer"><span>Step 3 · the Books plugin</span><span class="num">07</span></div>
+  </section>
+
+  <!-- ───────────── 8. STEP 3 EDIT BOOK ───────────── -->
+  <section class="slide dark showcase-slide" id="slide-8" aria-labelledby="slide-8-title">
+    <div class="slide-inner">
+      <p class="section-label"><span class="step-badge">Step 3a</span>Books admin · edit book</p>
+      <h2 id="slide-8-title" class="visually-hidden">Edit book details with Linked Preprints panel.</h2>
+      <figure class="shot shot-wide">
+        <img src="static/linked-books/02-edit-book.png" alt="Books admin Edit Book Details page. Left column shows the book's prefix, title 'Two Become One: A Transporter Accident Memoir by Tuvix', subtitle, category Open Textbooks, and a description editor. Right column shows Contributors (Tu Vok, Nee Lix with Down/Up reorder buttons), Formats panel saying 'No formats' with an Add Format button, Chapters panel saying 'No chapters' with Add Chapter, and a Linked Preprints panel with a 'Manage Linked Preprints' link.">
+        <figcaption>Edit Book Details. Click <strong>Manage Linked Preprints</strong>.</figcaption>
+      </figure>
+    </div>
+    <div class="slide-footer"><span>Step 3a · edit book</span><span class="num">08</span></div>
+  </section>
+
+  <!-- ───────────── 9. STEP 3 MANAGE EMPTY ───────────── -->
+  <section class="slide dark showcase-slide" id="slide-9" aria-labelledby="slide-9-title">
+    <div class="slide-inner">
+      <p class="section-label"><span class="step-badge">Step 3b</span>Manage linked preprints</p>
+      <h2 id="slide-9-title" class="visually-hidden">Linker page with empty linked column and full available list.</h2>
+      <figure class="shot shot-wide">
+        <img src="static/linked-books/03-manage-empty.png" alt="Manage Preprints for Two Become One: A Transporter Accident Memoir by Tuvix. Left column 'Linked Preprints' shows 'No preprints linked to this book.' Right column 'Available Preprints' is a paginated table with 25 records per page, a search box, and titles like 'Why Can't I Just Use Dropbox?', 2025 Business Meeting, A Curation Primer for Data Accessibility, A Guide to Responsible and Inclusive Data Ethics, A Multi-Strategic Approach to Locating Institutional Data Deposits, A Scoping Review to Collect and Disseminate Survey..., Actually Accessible Data: A Call To Action, each with an Add button.">
+        <figcaption>Linked on the left, everything available on the right.</figcaption>
+      </figure>
+    </div>
+    <div class="slide-footer"><span>Step 3b · empty state</span><span class="num">09</span></div>
+  </section>
+
+  <!-- ───────────── 10. STEP 3 SEARCH + ADD ───────────── -->
+  <section class="slide dark showcase-slide" id="slide-10" aria-labelledby="slide-10-title">
+    <div class="slide-inner">
+      <p class="section-label"><span class="step-badge">Step 3c</span>Search · Add</p>
+      <h2 id="slide-10-title" class="visually-hidden">Search filter narrows to one preprint, then click Add.</h2>
+      <figure class="shot shot-wide">
+        <img src="static/linked-books/05-search-add.png" alt="Same Manage Preprints page, with 'Appen' typed into the Search box. The Available Preprints table is filtered to a single result: 'Appendix C, Listing 3', with an Add button beside it. The footer notes 'Showing 1 to 1 of 1 entries (filtered from 258 total entries)'.">
+        <figcaption>Search for the preprint, then click <strong>Add</strong>.</figcaption>
+      </figure>
+    </div>
+    <div class="slide-footer"><span>Step 3c · pick the preprint</span><span class="num">10</span></div>
+  </section>
+
+  <!-- ───────────── 11. STEP 3 LINKED LIST ───────────── -->
+  <section class="slide dark showcase-slide" id="slide-11" aria-labelledby="slide-11-title">
+    <div class="slide-inner">
+      <p class="section-label"><span class="step-badge">Step 3d</span>Linked, with ordering</p>
+      <h2 id="slide-11-title" class="visually-hidden">Three preprints now linked, with reorder and remove controls.</h2>
+      <figure class="shot shot-wide">
+        <img src="static/linked-books/06-linked-list.png" alt="Manage Preprints page after adding three preprints. Linked Preprints column now lists three items: [0] Appendix C, Listing 3; [1] 'Why Can't I Just Use Dropbox?': Using Cloud File Storage Platforms for Research; [2] 2025 Business Meeting. Each row has Up, Down, and Remove buttons. Available Preprints continues with the rest of the repository.">
+        <figcaption>Add more if you want. Reorder with Up / Down, or Remove.</figcaption>
+      </figure>
+    </div>
+    <div class="slide-footer"><span>Step 3d · linked &amp; ordered</span><span class="num">11</span></div>
+  </section>
+
+  <!-- ───────────── 12. STEP 4 INTRO ───────────── -->
+  <section class="slide sand" id="slide-12" aria-labelledby="slide-12-title">
+    <div class="slide-inner">
+      <p class="section-label"><span class="step-badge">Step 4</span>The link shows up</p>
+      <h2 id="slide-12-title">It works both ways.</h2>
+      <p>You only link once, from the book side. The link then shows up on both pages:</p>
+      <ul class="bullets">
+        <li>On the <strong>book page</strong>, under <em>Linked Items</em>.</li>
+        <li>On the <strong>preprint page</strong>, under <em>Linked Books</em>.</li>
+      </ul>
+    </div>
+    <div class="slide-footer"><span>Step 4 · both sides</span><span class="num">12</span></div>
+  </section>
+
+  <!-- ───────────── 13. STEP 4 BOTH SCREENSHOTS ───────────── -->
+  <section class="slide sand showcase-slide" id="slide-13" aria-labelledby="slide-13-title">
+    <div class="slide-inner">
+      <p class="section-label"><span class="step-badge">Step 4</span>Both sides</p>
+      <h2 id="slide-13-title">One link, two pages.</h2>
+      <div class="shot-grid">
+        <figure class="shot">
+          <img src="static/linked-books/07-book-linked.png" alt="The book page for 'Two Become One: A Transporter Accident Memoir by Tuvix' as before, but now with a new 'Linked Items' section beside Publication Details, listing 'Appendix C, Listing 3' as a link.">
+          <figcaption>Book page. The preprint shows up under <strong>Linked Items</strong>.</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="static/linked-books/08-preprint-linked.png" alt="The preprint page for 'Appendix C, Listing 3', scrolled past the data table and Comments heading. The right sidebar shows a Metrics block (Views 0, Downloads 0) and a new 'Linked Books' block listing 'Two Become One: A Transporter Accident Memoir by Tuvix' as a link, followed by an 'All submissions' back link.">
+          <figcaption>Preprint page. The book shows up under <strong>Linked Books</strong>.</figcaption>
+        </figure>
+      </div>
+    </div>
+    <div class="slide-footer"><span>Step 4 · book ↔ preprint</span><span class="num">13</span></div>
+  </section>
+
+  <!-- ───────────── 14. WRAP ───────────── -->
+  <section class="slide dark closing" id="slide-14" aria-labelledby="slide-14-title">
+    <div class="hero-bg" aria-hidden="true">
+      <img class="road" src="static/rainbow-road.svg" alt="">
+      <div class="c1"></div>
+      <div class="c2"></div>
+    </div>
+    <div class="slide-inner">
+      <p class="section-label" style="text-align:center;">That's it</p>
+      <p id="slide-14-title" class="thanks">Book. Preprint. Linked.</p>
+      <p class="deck-sub" style="text-align:center;">
+        Funded by Iowa State University Digital Press.<br>
+        Built into core Janeway.
+      </p>
+      <p class="handle">#JanewayOA26</p>
+    </div>
+    <div class="slide-footer"><span>Linking books with preprints · TLD 2.0</span><span class="num">14</span></div>
+  </section>
+
+</main>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged screenshot" hidden>
+  <button type="button" class="lightbox-close" aria-label="Close enlarged view" id="lightbox-close">&times;</button>
+  <img id="lightbox-img" src="" alt="">
+  <p class="lightbox-caption" id="lightbox-caption"></p>
+</div>
+
+<script>
+  (function () {
+    var lb = document.getElementById('lightbox');
+    var lbImg = document.getElementById('lightbox-img');
+    var lbCap = document.getElementById('lightbox-caption');
+    var lbClose = document.getElementById('lightbox-close');
+    var lastFocus = null;
+
+    function open(img) {
+      lastFocus = document.activeElement;
+      lbImg.src = img.src;
+      lbImg.alt = img.alt || '';
+      var fig = img.closest('figure');
+      var cap = fig ? fig.querySelector('figcaption') : null;
+      lbCap.textContent = cap ? cap.textContent : '';
+      lb.hidden = false;
+      lb.classList.add('open');
+      lbClose.focus();
+      document.body.style.overflow = 'hidden';
+    }
+
+    function close() {
+      lb.classList.remove('open');
+      lb.hidden = true;
+      lbImg.src = '';
+      document.body.style.overflow = '';
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+
+    document.querySelectorAll('.shot img').forEach(function (img) {
+      img.setAttribute('tabindex', '0');
+      img.setAttribute('role', 'button');
+      img.setAttribute('aria-label', 'Enlarge screenshot');
+      img.addEventListener('click', function () { open(img); });
+      img.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(img); }
+      });
+    });
+
+    lb.addEventListener('click', function (e) {
+      if (e.target === lb || e.target === lbImg) close();
+    });
+    lbClose.addEventListener('click', close);
+    document.addEventListener('keydown', function (e) {
+      if (!lb.classList.contains('open')) return;
+      if (e.key === 'Escape') close();
+    });
+  })();
+</script>
+
+</body>
+</html>
